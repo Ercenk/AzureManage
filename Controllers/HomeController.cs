@@ -48,8 +48,11 @@ namespace AzureManage.Controllers
                .WithRedirectUri($"{this.Request.Scheme}://{this.Request.Host}{config["AzureAd:CallbackPath"]}")
                .Build();
 
+            var scopes = new string[] { "https://management.azure.com/user_impersonation" };
+            //var scopes = new string[] { "https://graph.microsoft.com/User.Read" };
+            //var scopes = new string[] { "user_impersonation" };
             // Acquiring an AuthenticationResult for the scope user.read, impersonating the user represented by userAssertion, using the OBO flow
-            var result = await app.AcquireTokenOnBehalfOf(new string[] { "https://management.azure.com/user_impersonation" }, userAssertion)
+            var result = await app.AcquireTokenOnBehalfOf(scopes, userAssertion)
                 .ExecuteAsync();
 
             return View();
